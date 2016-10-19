@@ -5,17 +5,14 @@ python:
 
 branches:
   only:
-    - milestone-1-kedar-deploy
+    - master
 
 sudo: false
 
 install: true
 
 before_script:
-  # - pip install virtualenv
   - cd ForecastDecision
-  # - virtualenv venv
-  # - . venv/bin/activate
   - pip install requests
   - pip install nose
   - pip install Flask
@@ -24,9 +21,9 @@ script: nosetests
 
 before_deploy:
   - cd ..
-  - zip -r SGA_NPComplete_Application.zip ForecastDecision Forecast scripts appspec.yml || true
+  - zip -r SGA_Forecast_Decision.zip ForecastDecision scripts appspec.yml || true
   - mkdir -p "dpl_cd_upload"
-  - mv SGA_NPComplete_Application.zip dpl_cd_upload/SGA_NPComplete_Application.zip || true
+  - mv SGA_Forecast_Decision.zip dpl_cd_upload/SGA_Forecast_Decision.zip || true
 
 deploy:
   - provider: s3
@@ -39,21 +36,16 @@ deploy:
     acl: public_read
     detect_encoding: true
     on:
-      branch: milestone-1-kedar-deploy
+      branch: master
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
     bucket: sga-teamnpcomplete
-    key: SGA_NPComplete_Application.zip
+    key: SGA_Forecast_Decision.zip
     bundle_type: zip
     application: TeamNPComplete
     deployment_group: TeamNPComplete
     region: us-west-2
     on:
-      branch: milestone-1-kedar-deploy
-
-
-notifications:
-  email:
-    - kgundlup@umail.iu.edu
+      branch: master
