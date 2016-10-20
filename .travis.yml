@@ -15,7 +15,6 @@ services:
 install: true
 
 before_install:
-  - cd ForecastDecision
   - docker build -t forecastdetector .
   - docker ps -a
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
