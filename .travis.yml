@@ -15,7 +15,7 @@ services:
 install: true
 
 before_install:
-  - docker build -t forecastdetector .
+  - docker build -t kedargn/forecastdetector .
   - docker ps -a
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push kedargn/forecastdetector
