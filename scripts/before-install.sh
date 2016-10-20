@@ -1,2 +1,2 @@
-#sudo docker stop kedargn/forecastdetector
-#sudo docker rmi -f $(sudo docker images | grep kedargn/forecastdetector | awk '{print $3}')
+sudo docker ps -a | grep 'forecastdetector' | awk '{print $1}' | xargs --no-run-if-empty docker stop
+sudo docker ps -a | grep 'forecastdetector' | awk '{print $1}' | xargs --no-run-if-empty docker rm
