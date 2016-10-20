@@ -20,3 +20,33 @@ install:
 
 script:
   - docker ps -a
+
+before_deploy:
+  - zip -r SGA_Forecast_Decision.zip scripts appspec.yml || true
+  - mkdir -p "dpl_cd_upload"
+  - mv SGA_Forecast_Decision.zip dpl_cd_upload/SGA_Forecast_Decision.zip || true
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: sga-teamnpcomplete
+    local_dir: dpl_cd_upload
+    region: us-west-2
+    skip_cleanup: true
+    acl: public_read
+    detect_encoding: true
+    on:
+      branch: milestone-2
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: sga-teamnpcomplete
+    key: SGA_Forecast_Decision.zip
+    bundle_type: zip
+    application: TeamNPComplete
+    deployment_group: TeamNPComplete
+    region: us-west-2
+    on:
+      branch: milestone-2
