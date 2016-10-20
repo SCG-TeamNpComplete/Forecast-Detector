@@ -5,47 +5,18 @@ python:
 
 branches:
   only:
-    - master
+    - milestone-2
 
-sudo: false
+sudo: required
+
+services:
+  - docker
 
 install: true
 
-before_script:
+before_install:
   - cd ForecastDecision
-  - pip install requests
-  - pip install nose
-  - pip install Flask
-
-script: nosetests
-
-before_deploy:
-  - cd ..
-  - zip -r SGA_Forecast_Decision.zip ForecastDecision scripts appspec.yml || true
-  - mkdir -p "dpl_cd_upload"
-  - mv SGA_Forecast_Decision.zip dpl_cd_upload/SGA_Forecast_Decision.zip || true
-
-deploy:
-  - provider: s3
-    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
-    secret_access_key: $AWS_SECRET_KEY
-    bucket: sga-teamnpcomplete
-    local_dir: dpl_cd_upload
-    region: us-west-2
-    skip_cleanup: true
-    acl: public_read
-    detect_encoding: true
-    on:
-      branch: master
-
-  - provider: codedeploy
-    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
-    secret_access_key: $AWS_SECRET_KEY
-    bucket: sga-teamnpcomplete
-    key: SGA_Forecast_Decision.zip
-    bundle_type: zip
-    application: TeamNPComplete
-    deployment_group: TeamNPComplete
-    region: us-west-2
-    on:
-      branch: master
+  - docker build -t forecastdetector .
+  - docker ps -a
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push kedargn/forecast-detector
