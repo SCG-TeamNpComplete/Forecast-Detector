@@ -21,7 +21,7 @@ def forecast_decision():
   
   if(random_no%2==0):
     parsed_json = {'result':'yes'}
-    connection = requests.post("http://ec2-54-69-92-137.us-west-2.compute.amazonaws.com:64000/forecast/json", data=json.dumps(result));
+    connection = requests.post("http://ec2-35-160-231-198.us-west-2.compute.amazonaws.com:64000/forecast/json", data=json.dumps(result));
     print connection
     response_json = ast.literal_eval(connection.text)
     result["text"] = "Forecast Initiated"	  
