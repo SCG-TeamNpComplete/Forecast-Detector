@@ -29,14 +29,14 @@ def forecast_decision():
 
   if(random_no%2==0):
     parsed_json = {'result':'yes'}
-    connection = requests.post("http://ec2-35-161-48-143.us-west-2.compute.amazonaws.com:64000/forecast/json", data=json.dumps(result));
+    connection = requests.post("http://ec2-35-160-137-157.us-west-2.compute.amazonaws.com:64000/forecast/json", data=json.dumps(result));
     print connection
     response_json = ast.literal_eval(connection.text)
     result["text"] = "Forecast Initiated"   
-    r = requests.post("http://ec2-35-161-48-143.us-west-2.compute.amazonaws.com:8080/SG_MICROSERVICE_REGISTRY/gateway/message/saveData", data=json.dumps(result), headers=headers)
+    r = requests.post("http://ec2-35-160-137-157.us-west-2.compute.amazonaws.com:8080/SG_MICROSERVICE_REGISTRY/gateway/message/saveData", data=json.dumps(result), headers=headers)
     print r.status_code
     return jsonify(response_json)
   else:
     result["text"] = "Forecast Not Initiated"
-    r = requests.post("http://ec2-35-161-48-143.us-west-2.compute.amazonaws.com:8080/SG_MICROSERVICE_REGISTRY/gateway/message/saveData", data=json.dumps(result), headers=headers)
+    r = requests.post("http://ec2-35-160-137-157.us-west-2.compute.amazonaws.com:8080/SG_MICROSERVICE_REGISTRY/gateway/message/saveData", data=json.dumps(result), headers=headers)
     return jsonify({'result':'no'})
