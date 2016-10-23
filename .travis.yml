@@ -19,9 +19,14 @@ install:
   - docker push kedargn/forecastdetector
 
 script:
+  - cd ForecastDecision
+  - pip install requests
+  - pip install nose
+  - pip install Flask
   - docker ps -a
 
 before_deploy:
+  - cd ..
   - zip -r SGA_Forecast_Decision.zip scripts appspec.yml || true
   - mkdir -p "dpl_cd_upload"
   - mv SGA_Forecast_Decision.zip dpl_cd_upload/SGA_Forecast_Decision.zip || true
