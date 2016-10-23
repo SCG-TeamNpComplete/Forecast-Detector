@@ -18,12 +18,16 @@ install:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push kedargn/forecastdetector
 
-script:
+before_script:
   - cd ForecastDecision
   - pip install requests
   - pip install nose
   - pip install Flask
   - docker ps -a
+
+
+script: nosetests
+
 
 before_deploy:
   - cd ..
