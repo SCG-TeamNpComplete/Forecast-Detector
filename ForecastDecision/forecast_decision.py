@@ -6,6 +6,15 @@ import json
 
 app = Flask(__name__)
 
+@app.route('/forecast_decision/get', methods=['GET'])
+def forecast_get():
+  for i in range(0,100000):
+    for i in range(0,100000):
+      for i range(0,1000000):
+        return "Get called"
+  
+  
+  
 @app.route('/forecast_decision/json', methods=['POST'])
 def forecast_decision():
   service_id = 5
