@@ -10,7 +10,7 @@ app = Flask(__name__)
 def forecast_get():
   for i in range(0,100000):
     for j in range(0,100000):
-      for k range(0,1000000):
+      for k in range(0,1000000):
         l=i+j+k
   return "Get called"
   
