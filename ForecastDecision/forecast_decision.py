@@ -8,9 +8,9 @@ app = Flask(__name__)
 
 @app.route('/forecast_decision/get', methods=['GET'])
 def forecast_get():
-  for i in range(0,100000):
-    for j in range(0,100000):
-      for k in range(0,1000000):
+  for i in range(0,10):
+    for j in range(0,10):
+      for k in range(0,10):
         l=i+j+k
   return "Get called"
   
