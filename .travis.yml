@@ -5,7 +5,7 @@ python:
 
 branches:
   only:
-    - milestone-2-test
+    - milestone-3
 
 sudo: required
 
@@ -13,10 +13,10 @@ services:
   - docker
 
 install:
-  - docker build -t kedargn/forecastdetectortest .
+  - docker build -t kedargn/forecastdetector .
   - docker ps -a
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push kedargn/forecastdetectortest
+  - docker push kedargn/forecastdetector
 
 before_script:
   - cd ForecastDecision
@@ -37,25 +37,37 @@ before_deploy:
 
 deploy:
   - provider: s3
-    access_key_id: $AWS_ACCESS_KEY_TEST # declared in Travis repo settings
-    secret_access_key: $AWS_SECRET_KEY_TEST
-    bucket: sga-teamnpcomplete-test
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: sga-teamnpcomplete
     local_dir: dpl_cd_upload
     region: us-west-2
     skip_cleanup: true
     acl: public_read
     detect_encoding: true
     on:
-      branch: milestone-2-test
+      branch: milestone-3
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: sga-teamnpcomplete
+    key: SGA_Forecast_Decision.zip
+    bundle_type: zip
+    application: TeamNPComplete
+    deployment_group: TeamNPComplete
+    region: us-west-2
+    on:
+      branch: milestone-3
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY_TEST # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY_TEST
-    bucket: sga-teamnpcomplete-test
+    bucket: sga-teamnpcomplete
     key: SGA_Forecast_Decision.zip
     bundle_type: zip
     application: TeamNPCompleteTest
     deployment_group: TeamNPCompleteTest
     region: us-west-2
     on:
-      branch: milestone-2-test
+      branch: milestone-3
