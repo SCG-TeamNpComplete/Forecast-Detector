@@ -5,19 +5,20 @@ cd '/home/ec2-user/docker'
 sudo docker login -e="kedar.gn20@gmail.com" -u="kedargn" -p="npcomplete"   #TODO : hide password
 sudo docker pull kedargn/forecastdetector
 
-forecastdetector1="$(sudo docker ps -a | grep 'forecastdetector1' | awk '{print $1}')"
-if [ "$forecastdetector1" != "" ]; then
-sudo docker ps -a | grep 'forecastdetector1' | awk '{print $1}' | xargs --no-run-if-empty docker stop
-sudo docker ps -a | grep 'forecastdetector1' | awk '{print $1}' | xargs --no-run-if-empty docker rm
-fi
-sudo docker run -d -p 65000:65000 --name forecastdetector1 $(sudo docker images | grep kedargn/forecastdetector | awk '{print $3}') >> ./log.txt
-
-
-sleep 2
-
-forecastdetector2="$(sudo docker ps -a | grep 'forecastdetector2' | awk '{print $1}')"
-if [ "$forecastdetector2" != "" ]; then
-sudo docker ps -a | grep 'forecastdetector2' | awk '{print $1}' | xargs --no-run-if-empty docker stop
-sudo docker ps -a | grep 'forecastdetector2' | awk '{print $1}' | xargs --no-run-if-empty docker rm
-fi
-sudo docker run -d -p 65001:65001 --name forecastdetector2 $(sudo docker images | grep kedargn/forecastdetector | awk '{print $3}') >> ./log.txt
+no_of_instances=3     #change this to set the number of instances
+current_instance=1
+port=65000
+while [ $current_instance -le $no_of_instances ]
+do
+	#echo "$(sudo docker ps -a | grep "forecastdetector$current_instance" | awk '{print $1}')"
+	if [ "$(sudo docker ps -a | grep "forecastdetector$current_instance" | awk '{print $1}')" != "" ]; then
+		sudo docker ps -a | grep "forecastdetector$current_instance" | awk '{print $1}' | xargs --no-run-if-empty sudo docker stop
+		sudo docker ps -a | grep "forecastdetector$current_instance" | awk '{print $1}' | xargs --no-run-if-empty sudo docker rm
+	fi
+	#echo "$port:$port"
+	sudo docker run -d -p "$port:$port" --name "forecastdetector$current_instance" $(sudo docker images | grep kedargn/forecastdetector | awk '{print $3}')
+	echo "forecastdetector$current_instance instance"
+	current_instance=$((current_instance+1))
+	port=$((port+1))
+	sleep 1
+done
