@@ -9,18 +9,17 @@ app = Flask(__name__)
 @app.route('/forecast_decision/json', methods=['POST'])
 def forecast_decision():
   service_id = 5
-
   response_json = {}
   random_no = int(random.uniform(0, 100))
-
   result = ast.literal_eval(request.data)
   result["serviceId"] = "ForecastDecision"
-
   headers = {'Content-Type': 'application/json'}
+
+  forecastUrl = requests.get("http://ec2-35-160-137-157.us-west-2.compute.amazonaws.com:9999/TeamNpComplete/Forecast")
 
   if(random_no%2==0):
     parsed_json = {'result':'yes'}
-    connection = requests.post("http://ec2-35-160-137-157.us-west-2.compute.amazonaws.com:64000/forecast/json", data=json.dumps(result));
+    connection = requests.post(forecastUrl+"/forecast/json", data=json.dumps(result));
     print connection
     response_json = ast.literal_eval(connection.text)
     result["text"] = "Forecast Initiated"   
