@@ -88,7 +88,7 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
     bucket: sga-npcomplete-east
-    key: SGA_Forecast.zip
+    key: SGA_Forecast_Decision.zip
     bundle_type: zip
     application: TeamNpComplete3
     deployment_group: TeamNpComplete3
