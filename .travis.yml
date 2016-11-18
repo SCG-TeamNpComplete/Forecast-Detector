@@ -24,13 +24,13 @@ before_script:
   - pip install nose
   - pip install Flask
   - docker ps -a
+  - cd ..
 
 
 script: nosetests
 
 
 before_deploy:
-  - cd ..
   - zip -r SGA_Forecast_Decision.zip scripts appspec.yml || true
   - mkdir -p "dpl_cd_upload"
   - mv SGA_Forecast_Decision.zip dpl_cd_upload/SGA_Forecast_Decision.zip || true
@@ -69,5 +69,29 @@ deploy:
     application: TeamNPCompleteTest
     deployment_group: TeamNPCompleteTest
     region: us-west-2
+    on:
+      branch: milestone-3
+
+   - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: sga-npcomplete-east
+    local_dir: dpl_cd_upload
+    region: us-east-2
+    skip_cleanup: true
+    acl: public_read
+    detect_encoding: true
+    on:
+      branch: milestone-3
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: sga-npcomplete-east
+    key: SGA_Forecast.zip
+    bundle_type: zip
+    application: TeamNpComplete3
+    deployment_group: TeamNpComplete3
+    region: us-east-2
     on:
       branch: milestone-3

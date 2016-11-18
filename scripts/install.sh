@@ -5,7 +5,7 @@ cd '/home/ec2-user/docker'
 sudo docker login -u="kedargn" -p="npcomplete"   #TODO : hide password
 sudo docker pull kedargn/forecastdetector
 
-no_of_instances=3     #change this to set the number of instances
+no_of_instances=1     #change this to set the number of instances
 current_instance=1
 port=65000
 while [ $current_instance -le $no_of_instances ]
