@@ -12,7 +12,8 @@ import calendar, datetime, time
 from datetime import datetime
 
 app = Flask(__name__)
-ec2Ip = requests.get("http://checkip.amazonaws.com/").text.split("\n")[0]
+app.debug = True
+ec2Ip = ""
 #ec2Ip = "127.0.0.1"
 @app.route('/forecast_decision/json', methods=['POST'])
 def forecast_decision():
@@ -79,5 +80,11 @@ def connect():
     print "error "+e.message
   logging.basicConfig()
 
-connect()
+
+if __name__=='__main__':
+  global ec2Ip
+  ec2Ip = requests.get("http://checkip.amazonaws.com/").text.split("\n")[0]
+  print "global ec2Ip"+ec2Ip
+  connect()
+  app.run(debug=True, host = '0.0.0.0', port = 65000)
 

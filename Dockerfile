@@ -16,4 +16,5 @@ RUN pip install datetime
 RUN pip install logging 
 ENV FLASK_APP=forecast_decision.py
 EXPOSE 65000
-CMD flask run --host=0.0.0.0 --port=65000
+
+CMD python forecast_decision.py 
