@@ -82,7 +82,6 @@ def connect():
 
 
 if __name__=='__main__':
-  global ec2Ip
   ec2Ip = requests.get("http://checkip.amazonaws.com/").text.split("\n")[0]
   print "global ec2Ip"+ec2Ip
   connect()
