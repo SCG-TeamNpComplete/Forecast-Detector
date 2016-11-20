@@ -25,8 +25,7 @@ if [ ! -d "$dir" ] ; then
 	echo "tickTime=2000" > zoo.cfg
 	echo "dataDir=/var/lib/zookeeper" >> zoo.cfg
 	echo "clientPort=2181" >> zoo.cfg
+	cd "$dir/bin"
+	./zkServer.sh stop
+	./zkServer.sh start
 fi
-
-cd "$dir/bin"
-./zkServer.sh stop
-./zkServer.sh start
