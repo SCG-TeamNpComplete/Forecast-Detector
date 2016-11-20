@@ -24,7 +24,7 @@ def forecast_decision():
   result["serviceId"] = "ForecastDecision"
   headers = {'Content-Type': 'application/json'}
 
-  forecastUrl = requests.get("http://ec2-35-160-137-157.us-west-2.compute.amazonaws.com:11000/servicegateway/forecast")
+  forecastUrl = requests.get("http://ec2-35-161-48-143.us-west-2.compute.amazonaws.com:11000/SG_MICROSERVICE_SERVICEGATEWAY/gateway/servicegateway/forecast")
 
   if(random_no%2==0):
     parsed_json = {'result':'yes'}
